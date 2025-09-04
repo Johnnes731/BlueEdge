@@ -1,20 +1,16 @@
-<!-- Save as win11-mockup.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Win11 Mockup</title>
+  <title>Windows 10 Desktop Mockup</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      width: 100vw;
-      background: url('https://tse2.mm.bing.net/th/id/OIP.r02eaciSnsJbQLOUOC9MfgHaEo?r=0&cb=thfvnextucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3') no-repeat center center fixed;
-      background-size: cover;
+      background: linear-gradient(120deg, #0078d7 0%, #1a237e 100%);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: white;
       overflow: hidden;
-      transition: background-image 0.5s;
     }
     .desktop-icons {
       position: absolute;
@@ -23,7 +19,6 @@
       display: flex;
       flex-direction: column;
       gap: 30px;
-      z-index: 2;
     }
     .icon {
       display: flex;
@@ -41,146 +36,115 @@
       margin-top: 5px;
       font-size: 14px;
       text-shadow: 1px 1px 2px #0008;
-      color: #fff;
       background: rgba(0,0,0,0.3);
       border-radius: 6px;
       padding: 2px 8px;
       margin-bottom: 2px;
     }
-    /* Taskbar */
     .taskbar {
-      position: fixed;
+      position: absolute;
       bottom: 0;
       left: 0;
       width: 100vw;
-      height: 60px;
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 -2px 16px #0003;
+      height: 48px;
+      background: rgba(30, 30, 30, 0.95);
       display: flex;
       align-items: center;
-      justify-content: center;
+      box-shadow: 0 -2px 8px #0006;
       z-index: 10;
     }
-    .taskbar-center {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 18px;
-      padding: 4px 24px;
-      box-shadow: 0 2px 8px #0002;
-    }
-    .taskbar-icon {
-      width: 44px;
-      height: 44px;
+    .start-btn, .taskbar-app-btn {
+      width: 48px;
+      height: 48px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-radius: 12px;
-      transition: background 0.2s;
       cursor: pointer;
+      background: none;
+      border: none;
+      outline: none;
+      margin-right: 6px;
     }
-    .taskbar-icon:hover {
-      background: rgba(0,0,0,0.08);
-    }
-    .taskbar-icon img {
+    .start-btn img, .taskbar-app-btn img {
       width: 28px;
       height: 28px;
     }
-    .taskbar-icon span {
+    .taskbar-app-btn span {
       font-size: 11px;
-      color: #222;
+      color: #fff;
       margin-top: 2px;
-      background: rgba(255,255,255,0.7);
+      background: rgba(0,0,0,0.3);
       border-radius: 4px;
       padding: 1px 6px;
       font-weight: 500;
       letter-spacing: 0.2px;
     }
     .taskbar-time {
-      position: absolute;
-      right: 32px;
-      color: #222;
+      margin-left: auto;
+      margin-right: 20px;
       font-size: 16px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      bottom: 12px;
-      z-index: 11;
-      user-select: none;
+      color: #fff;
+      text-shadow: 1px 1px 2px #0008;
     }
-    /* Start Menu */
-    .start-menu {
+    /* Modal styles */
+    .modal {
       display: none;
       position: fixed;
-      left: 50%;
-      bottom: 70px;
-      transform: translateX(-50%);
-      width: 400px;
-      background: rgba(255,255,255,0.95);
-      border-radius: 18px;
-      box-shadow: 0 4px 32px #0006;
-      z-index: 100;
-      padding: 24px;
-      color: #222;
-      text-align: center;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.4);
+      align-items: center;
+      justify-content: center;
     }
-    .start-menu h2 {
-      margin: 0 0 16px 0;
-      font-size: 22px;
-      font-weight: 600;
-    }
-    .start-menu p {
-      margin: 0;
-      font-size: 15px;
-    }
-    /* Window styles */
-    .window {
-      display: none;
-      position: fixed;
-      z-index: 1001;
-      min-width: 350px;
-      min-height: 220px;
-      max-width: 90vw;
-      max-height: 80vh;
+    .modal-content {
       background: #f3f3f3;
       color: #222;
-      border-radius: 12px;
+      border-radius: 8px;
       box-shadow: 0 4px 32px #0008;
+      min-width: 400px;
+      min-height: 300px;
+      max-width: 90vw;
+      max-height: 80vh;
+      display: flex;
       flex-direction: column;
+      position: relative;
       overflow: hidden;
       resize: both;
     }
-    .window-header {
+    .modal-header {
       background: #0078d7;
       color: #fff;
-      padding: 10px 18px;
+      padding: 8px 16px;
       font-weight: bold;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
-      user-select: none;
       cursor: move;
+      user-select: none;
     }
-    .window-close-btn {
+    .close-btn {
       background: none;
       border: none;
       color: #fff;
-      font-size: 22px;
+      font-size: 20px;
       cursor: pointer;
       font-weight: bold;
     }
-    .window-body {
+    .modal-body {
       flex: 1;
       padding: 16px;
       overflow: auto;
       background: #fff;
-      min-height: 120px;
     }
-    /* Paint canvas and controls */
+    /* Responsive iframe for Edge/Spotify */
+    .modal-body iframe {
+      width: 100%;
+      height: 60vh;
+      border: none;
+    }
+    /* Simple paint canvas */
     #paint-canvas {
       border: 1px solid #888;
       background: #fff;
@@ -206,12 +170,18 @@
       border: 2px solid #0078d7;
       box-shadow: 0 0 4px #0078d7;
     }
-    /* Edge window iframe */
-    .window-body iframe {
+    /* Simple maze placeholder */
+    #maze-placeholder {
       width: 100%;
-      height: 60vh;
-      border: none;
-      min-height: 150px;
+      height: 250px;
+      background: repeating-linear-gradient(
+        45deg, #e0e0e0, #e0e0e0 10px, #bdbdbd 10px, #bdbdbd 20px
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #333;
     }
     /* Wallpaper app */
     .wallpaper-list {
@@ -252,94 +222,140 @@
   </style>
 </head>
 <body>
-  <!-- Desktop Icons -->
   <div class="desktop-icons">
-    <div class="icon" onclick="openWindow('paint')">
+    <div class="icon" onclick="openModal('paint')">
       <img src="https://img.icons8.com/color/48/000000/paint-palette.png" alt="Paint">
       <span>Paint</span>
     </div>
-    <div class="icon" onclick="openWindow('edge')">
+    <div class="icon" onclick="openModal('maze')">
+      <img src="https://img.icons8.com/color/48/000000/maze.png" alt="Maze">
+      <span>Maze</span>
+    </div>
+    <div class="icon" onclick="openModal('edge')">
       <img src="https://img.icons8.com/color/48/000000/ms-edge-new.png" alt="Edge">
       <span>Edge</span>
     </div>
-    <div class="icon" onclick="openWindow('wallpaper')">
+    <div class="icon" onclick="openModal('wallpaper')">
       <img src="https://img.icons8.com/color/48/000000/picture.png" alt="Wallpaper">
       <span>Wallpaper</span>
     </div>
-  </div>
-  <!-- Taskbar -->
-  <div class="taskbar">
-    <div class="taskbar-center">
-      <div class="taskbar-icon" id="start-btn" title="Start">
-        <img src="https://img.icons8.com/color/48/000000/windows-11.png" alt="Start">
-        <span>Start</span>
-      </div>
-      <div class="taskbar-icon" onclick="openWindow('paint')" title="Paint">
-        <img src="https://img.icons8.com/color/48/000000/paint-palette.png" alt="Paint">
-        <span>Paint</span>
-      </div>
-      <div class="taskbar-icon" onclick="openWindow('edge')" title="Edge">
-        <img src="https://img.icons8.com/color/48/000000/ms-edge-new.png" alt="Edge">
-        <span>Edge</span>
-      </div>
-      <div class="taskbar-icon" onclick="openWindow('wallpaper')" title="Wallpaper">
-        <img src="https://img.icons8.com/color/48/000000/picture.png" alt="Wallpaper">
-        <span>Wallpaper</span>
-      </div>
+    <div class="icon" onclick="openModal('spotify')">
+      <img src="https://img.icons8.com/color/48/000000/spotify--v1.png" alt="Spotify">
+      <span>Spotify</span>
     </div>
+    <div class="icon">
+      <img src="https://img.icons8.com/color/48/000000/recycle-bin.png" alt="Recycle Bin">
+      <span>Recycle Bin</span>
+    </div>
+    <div class="icon">
+      <img src="https://img.icons8.com/color/48/000000/folder-invoices--v1.png" alt="Folder">
+      <span>Documents</span>
+    </div>
+  </div>
+  <div class="taskbar">
+    <button class="start-btn">
+      <img src="https://img.icons8.com/color/48/000000/windows-10.png" alt="Start">
+    </button>
+    <button class="taskbar-app-btn" onclick="openModal('paint')" title="Paint">
+      <img src="https://img.icons8.com/color/48/000000/paint-palette.png" alt="Paint">
+      <span>Paint</span>
+    </button>
+    <button class="taskbar-app-btn" onclick="openModal('maze')" title="Maze">
+      <img src="https://img.icons8.com/color/48/000000/maze.png" alt="Maze">
+      <span>Maze</span>
+    </button>
+    <button class="taskbar-app-btn" onclick="openModal('edge')" title="Edge">
+      <img src="https://img.icons8.com/color/48/000000/ms-edge-new.png" alt="Edge">
+      <span>Edge</span>
+    </button>
+    <button class="taskbar-app-btn" onclick="openModal('wallpaper')" title="Wallpaper">
+      <img src="https://img.icons8.com/color/48/000000/picture.png" alt="Wallpaper">
+      <span>Wallpaper</span>
+    </button>
+    <button class="taskbar-app-btn" onclick="openModal('spotify')" title="Spotify">
+      <img src="https://img.icons8.com/color/48/000000/spotify--v1.png" alt="Spotify">
+      <span>Spotify</span>
+    </button>
     <div class="taskbar-time" id="clock"></div>
   </div>
-  <!-- Start Menu -->
-  <div class="start-menu" id="start-menu">
-    <h2>Start Menu</h2>
-    <p>This is a simple Windows 11-style start menu mockup.</p>
-  </div>
-  <!-- Paint Window -->
-  <div class="window" id="paint-window" style="top:120px;left:120px;width:400px;height:340px;">
-    <div class="window-header" id="paint-header">
-      Paint
-      <button class="window-close-btn" onclick="closeWindow('paint')">&times;</button>
-    </div>
-    <div class="window-body">
-      <div class="paint-controls">
-        <span>Color:</span>
-        <div class="paint-color" style="background:#0078d7;" data-color="#0078d7"></div>
-        <div class="paint-color" style="background:#e81123;" data-color="#e81123"></div>
-        <div class="paint-color" style="background:#f9f1a5;" data-color="#f9f1a5"></div>
-        <div class="paint-color" style="background:#22c55e;" data-color="#22c55e"></div>
-        <div class="paint-color" style="background:#fff;" data-color="#fff"></div>
-        <div class="paint-color" style="background:#222;" data-color="#222"></div>
-        <button onclick="clearCanvas()">Clear</button>
+
+  <!-- Paint Modal -->
+  <div class="modal" id="paint-modal">
+    <div class="modal-content" style="min-width:400px;min-height:340px;">
+      <div class="modal-header" id="paint-header">
+        Paint
+        <button class="close-btn" onclick="closeModal('paint')">&times;</button>
       </div>
-      <canvas id="paint-canvas" width="350" height="200"></canvas>
-    </div>
-  </div>
-  <!-- Edge Window -->
-  <div class="window" id="edge-window" style="top:180px;left:220px;width:600px;height:400px;">
-    <div class="window-header" id="edge-header">
-      Edge
-      <button class="window-close-btn" onclick="closeWindow('edge')">&times;</button>
-    </div>
-    <div class="window-body">
-      <iframe src="https://67.spacejamhd.com/" title="Edge"></iframe>
-    </div>
-  </div>
-  <!-- Wallpaper Window -->
-  <div class="window" id="wallpaper-window" style="top:220px;left:320px;width:500px;height:340px;">
-    <div class="window-header" id="wallpaper-header">
-      Wallpaper
-      <button class="window-close-btn" onclick="closeWindow('wallpaper')">&times;</button>
-    </div>
-    <div class="window-body">
-      <div class="wallpaper-list" id="wallpaper-list">
-        <img class="wallpaper-thumb" src="https://th.bing.com/th/id/R.a5eccd750f64c42ac76171a6eb828f69?rik=CvABoQ7%2baowyEA&riu=http%3a%2f%2fwww.pixelstalk.net%2fwp-content%2fuploads%2f2016%2f07%2fAmazing-sunset-colors-wallpaper-4k.jpg&ehk=8lLXROyIBgEFeelIpEJeN%2f3dHR7fJg26VN4nnivqMjE%3d&risl=&pid=ImgRaw&r=0" alt="Wallpaper 1">
-        <img class="wallpaper-thumb" src="https://tse4.mm.bing.net/th/id/OIP.wJC9M5ClemWX7PHNKUIA1gHaEo?r=0&cb=thfvnextucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Wallpaper 2">
-        <img class="wallpaper-thumb" src="https://images.hdqwalls.com/download/black-hole-art-4k-85-3840x2160.jpg" alt="Wallpaper 3">
-        <img class="wallpaper-thumb" src="https://static.wikia.nocookie.net/cef1efee-c5d3-471b-a84c-bcc2c47989c2/scale-to-width/755" alt="Wallpaper 4">
+      <div class="modal-body">
+        <div class="paint-controls">
+          <span>Color:</span>
+          <div class="paint-color" style="background:#0078d7;" data-color="#0078d7"></div>
+          <div class="paint-color" style="background:#e81123;" data-color="#e81123"></div>
+          <div class="paint-color" style="background:#f9f1a5;" data-color="#f9f1a5"></div>
+          <div class="paint-color" style="background:#22c55e;" data-color="#22c55e"></div>
+          <div class="paint-color" style="background:#fff;" data-color="#fff"></div>
+          <div class="paint-color" style="background:#222;" data-color="#222"></div>
+          <button onclick="clearCanvas()">Clear</button>
+        </div>
+        <canvas id="paint-canvas" width="350" height="200"></canvas>
       </div>
-      <button class="wallpaper-set-btn" id="set-wallpaper-btn" disabled>Set as Wallpaper</button>
     </div>
   </div>
+  <!-- Maze Modal -->
+  <div class="modal" id="maze-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        Maze
+        <button class="close-btn" onclick="closeModal('maze')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="maze-placeholder">Maze Game Coming Soon!</div>
+      </div>
+    </div>
+  </div>
+  <!-- Edge Modal -->
+  <div class="modal" id="edge-modal">
+    <div class="modal-content" style="min-width:600px;min-height:400px;">
+      <div class="modal-header" id="edge-header">
+        Edge (Proxy)
+        <button class="close-btn" onclick="closeModal('edge')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:0;">
+        <iframe src="https://broiscurrently.asleep.pw/" title="Edge Proxy"></iframe>
+      </div>
+    </div>
+  </div>
+  <!-- Wallpaper Modal -->
+  <div class="modal" id="wallpaper-modal">
+    <div class="modal-content" style="min-width:500px;min-height:340px;">
+      <div class="modal-header" id="wallpaper-header">
+        Wallpaper
+        <button class="close-btn" onclick="closeModal('wallpaper')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="wallpaper-list" id="wallpaper-list">
+          <img class="wallpaper-thumb" src="https://th.bing.com/th/id/R.a5eccd750f64c42ac76171a6eb828f69?rik=CvABoQ7%2baowyEA&riu=http%3a%2f%2fwww.pixelstalk.net%2fwp-content%2fuploads%2f2016%2f07%2fAmazing-sunset-colors-wallpaper-4k.jpg&ehk=8lLXROyIBgEFeelIpEJeN%2f3dHR7fJg26VN4nnivqMjE%3d&risl=&pid=ImgRaw&r=0" alt="Wallpaper 1">
+          <img class="wallpaper-thumb" src="https://tse4.mm.bing.net/th/id/OIP.wJC9M5ClemWX7PHNKUIA1gHaEo?r=0&cb=thfvnextucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Wallpaper 2">
+          <img class="wallpaper-thumb" src="https://images.hdqwalls.com/download/black-hole-art-4k-85-3840x2160.jpg" alt="Wallpaper 3">
+          <img class="wallpaper-thumb" src="https://static.wikia.nocookie.net/cef1efee-c5d3-471b-a84c-bcc2c47989c2/scale-to-width/755" alt="Wallpaper 4">
+        </div>
+        <button class="wallpaper-set-btn" id="set-wallpaper-btn" disabled>Set as Wallpaper</button>
+      </div>
+    </div>
+  </div>
+  <!-- Spotify Modal -->
+  <div class="modal" id="spotify-modal">
+    <div class="modal-content" style="min-width:600px;min-height:400px;">
+      <div class="modal-header" id="spotify-header">
+        Spotify
+        <button class="close-btn" onclick="closeModal('spotify')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:0;">
+        <iframe src="https://accounts.spotify.com/login" title="Spotify Login"></iframe>
+      </div>
+    </div>
+  </div>
+
   <script>
     // 12-hour clock with AM/PM
     function updateClock() {
@@ -354,36 +370,23 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Start menu logic
-    const startBtn = document.getElementById('start-btn');
-    const startMenu = document.getElementById('start-menu');
-    startBtn.onclick = function(e) {
-      e.stopPropagation();
-      startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
-    };
-    window.onclick = function(e) {
-      if (!startMenu.contains(e.target) && e.target !== startBtn) {
-        startMenu.style.display = 'none';
-      }
-    };
-
-    // Window logic
-    function openWindow(app) {
-      document.getElementById(app + '-window').style.display = 'flex';
+    // Modal logic
+    function openModal(app) {
+      document.getElementById(app + '-modal').style.display = 'flex';
     }
-    function closeWindow(app) {
-      document.getElementById(app + '-window').style.display = 'none';
+    function closeModal(app) {
+      document.getElementById(app + '-modal').style.display = 'none';
     }
 
-    // Moveable windows
-    function makeDraggable(headerId, windowId) {
+    // Moveable modals
+    function makeDraggable(headerId, modalId) {
       const header = document.getElementById(headerId);
-      const win = document.getElementById(windowId);
+      const modal = document.getElementById(modalId + '-modal').querySelector('.modal-content');
       let isDragging = false, offsetX = 0, offsetY = 0;
 
       header.addEventListener('mousedown', function(e) {
         isDragging = true;
-        const rect = win.getBoundingClientRect();
+        const rect = modal.getBoundingClientRect();
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
         document.body.style.userSelect = 'none';
@@ -393,11 +396,12 @@
         if (!isDragging) return;
         let left = e.clientX - offsetX;
         let top = e.clientY - offsetY;
-        // Keep window within viewport
-        left = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, left));
-        top = Math.max(0, Math.min(window.innerHeight - win.offsetHeight, top));
-        win.style.left = left + 'px';
-        win.style.top = top + 'px';
+        left = Math.max(0, Math.min(window.innerWidth - modal.offsetWidth, left));
+        top = Math.max(0, Math.min(window.innerHeight - modal.offsetHeight, top));
+        modal.style.left = left + 'px';
+        modal.style.top = top + 'px';
+        modal.style.position = 'absolute';
+        modal.style.transform = 'none';
       });
 
       document.addEventListener('mouseup', function() {
@@ -405,55 +409,57 @@
         document.body.style.userSelect = '';
       });
     }
-    makeDraggable('paint-header', 'paint-window');
-    makeDraggable('edge-header', 'edge-window');
-    makeDraggable('wallpaper-header', 'wallpaper-window');
+    makeDraggable('paint-header', 'paint');
+    makeDraggable('maze-modal', 'maze');
+    makeDraggable('edge-header', 'edge');
+    makeDraggable('wallpaper-header', 'wallpaper');
+    makeDraggable('spotify-header', 'spotify');
 
     // Paint logic with color selection
     const canvas = document.getElementById('paint-canvas');
-    const ctx = canvas.getContext('2d');
-    let painting = false;
-    let currentColor = "#0078d7";
-    let lastX = 0, lastY = 0;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let painting = false;
+      let currentColor = "#0078d7";
+      let lastX = 0, lastY = 0;
 
-    canvas.addEventListener('mousedown', (e) => {
-      painting = true;
-      const rect = canvas.getBoundingClientRect();
-      lastX = e.clientX - rect.left;
-      lastY = e.clientY - rect.top;
-    });
-    canvas.addEventListener('mouseup', () => painting = false);
-    canvas.addEventListener('mouseleave', () => painting = false);
-    canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mousedown', (e) => {
+        painting = true;
+        const rect = canvas.getBoundingClientRect();
+        lastX = e.clientX - rect.left;
+        lastY = e.clientY - rect.top;
+      });
+      canvas.addEventListener('mouseup', () => painting = false);
+      canvas.addEventListener('mouseleave', () => painting = false);
+      canvas.addEventListener('mousemove', draw);
 
-    function draw(e) {
-      if (!painting) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      ctx.strokeStyle = currentColor;
-      ctx.lineWidth = 3;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(lastX, lastY);
-      ctx.lineTo(x, y);
-      ctx.stroke();
-      lastX = x;
-      lastY = y;
+      function draw(e) {
+        if (!painting) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        lastX = x;
+        lastY = y;
+      }
+      window.clearCanvas = function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      document.querySelectorAll('.paint-color').forEach(el => {
+        el.onclick = function() {
+          document.querySelectorAll('.paint-color').forEach(c => c.classList.remove('selected'));
+          el.classList.add('selected');
+          currentColor = el.getAttribute('data-color');
+        };
+      });
+      document.querySelector('.paint-color[data-color="#0078d7"]').classList.add('selected');
     }
-    window.clearCanvas = function() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-    // Color selection
-    document.querySelectorAll('.paint-color').forEach(el => {
-      el.onclick = function() {
-        document.querySelectorAll('.paint-color').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected');
-        currentColor = el.getAttribute('data-color');
-      };
-    });
-    // Set default selected color
-    document.querySelector('.paint-color[data-color="#0078d7"]').classList.add('selected');
 
     // Wallpaper app logic
     const wallpaperThumbs = document.querySelectorAll('.wallpaper-thumb');
