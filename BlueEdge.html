@@ -403,7 +403,7 @@
     setInterval(updateLockScreenClock, 1000);
     updateLockScreenClock();
 
-    // Lock screen unlock logic with 10 attempts
+    // Lock screen unlock logic with 10 attempts, error stays until unlocked
     const lockScreen = document.getElementById('lock-screen');
     const desktopContent = document.getElementById('desktop-content');
     const lockForm = document.getElementById('lock-form');
@@ -427,6 +427,8 @@
           lockForm.querySelector('button').disabled = true;
         }
       }
+      // Error message stays until unlocked
+      return false;
     };
 
     // Desktop clock
@@ -547,5 +549,3 @@
       }
     };
   </script>
-</body>
-</html>
