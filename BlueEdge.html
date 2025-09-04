@@ -1,0 +1,219 @@
+<!-- Save as win11-mockup.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Win11 Mockup</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      width: 100vw;
+      background: url('https://tse2.mm.bing.net/th/id/OIP.r02eaciSnsJbQLOUOC9MfgHaEo?r=0&cb=thfvnextucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      overflow: hidden;
+    }
+    /* Taskbar */
+    .taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 60px;
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 -2px 16px #0003;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    .taskbar-center {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 4px 24px;
+      box-shadow: 0 2px 8px #0002;
+    }
+    .taskbar-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .taskbar-icon:hover {
+      background: rgba(0,0,0,0.08);
+    }
+    .taskbar-icon img {
+      width: 28px;
+      height: 28px;
+    }
+    .taskbar-time {
+      position: absolute;
+      right: 32px;
+      color: #222;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      bottom: 12px;
+      z-index: 11;
+      user-select: none;
+    }
+    /* Start Menu */
+    .start-menu {
+      display: none;
+      position: fixed;
+      left: 50%;
+      bottom: 70px;
+      transform: translateX(-50%);
+      width: 400px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 18px;
+      box-shadow: 0 4px 32px #0006;
+      z-index: 100;
+      padding: 24px;
+      color: #222;
+      text-align: center;
+    }
+    .start-menu h2 {
+      margin: 0 0 16px 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .start-menu p {
+      margin: 0;
+      font-size: 15px;
+    }
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.4);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #f3f3f3;
+      color: #222;
+      border-radius: 12px;
+      box-shadow: 0 4px 32px #0008;
+      min-width: 600px;
+      min-height: 400px;
+      max-width: 90vw;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .modal-header {
+      background: #0078d7;
+      color: #fff;
+      padding: 10px 18px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      user-select: none;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .modal-body {
+      flex: 1;
+      padding: 0;
+      overflow: auto;
+      background: #fff;
+    }
+    .modal-body iframe {
+      width: 100%;
+      height: 60vh;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Taskbar -->
+  <div class="taskbar">
+    <div class="taskbar-center">
+      <div class="taskbar-icon" id="start-btn" title="Start">
+        <img src="https://img.icons8.com/color/48/000000/windows-11.png" alt="Start">
+      </div>
+      <div class="taskbar-icon" onclick="openModal('edge')" title="Edge">
+        <img src="https://img.icons8.com/color/48/000000/ms-edge-new.png" alt="Edge">
+      </div>
+      <!-- Add more icons as needed -->
+    </div>
+    <div class="taskbar-time" id="clock"></div>
+  </div>
+  <!-- Start Menu -->
+  <div class="start-menu" id="start-menu">
+    <h2>Start Menu</h2>
+    <p>This is a simple Windows 11-style start menu mockup.</p>
+  </div>
+  <!-- Edge Modal -->
+  <div class="modal" id="edge-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        Edge
+        <button class="close-btn" onclick="closeModal('edge')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <iframe src="https://67.spacejamhd.com/" title="Edge"></iframe>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 12-hour clock with AM/PM
+    function updateClock() {
+      const now = new Date();
+      let h = now.getHours();
+      const m = now.getMinutes().toString().padStart(2, '0');
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12;
+      h = h ? h : 12;
+      document.getElementById('clock').textContent = `${h}:${m} ${ampm}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Start menu logic
+    const startBtn = document.getElementById('start-btn');
+    const startMenu = document.getElementById('start-menu');
+    startBtn.onclick = function() {
+      startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+    };
+    window.onclick = function(e) {
+      if (!startMenu.contains(e.target) && e.target !== startBtn) {
+        startMenu.style.display = 'none';
+      }
+    };
+
+    // Modal logic
+    function openModal(app) {
+      document.getElementById(app + '-modal').style.display = 'flex';
+    }
+    function closeModal(app) {
+      document.getElementById(app + '-modal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
